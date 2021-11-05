@@ -1,34 +1,64 @@
 # frozen_string_literal: true
 
+require "json"
+require "open3"
+
 module Danger
-  # This is your plugin class. Any attributes or methods you expose here will
-  # be available from within your Dangerfile.
+  # [Danger](http://danger.systems/ruby/) plugin for [phpmd](https://phpmd.org/).
   #
-  # To be published on the Danger plugins site, you will need to have
-  # the public interface documented. Danger uses [YARD](http://yardoc.org/)
-  # for generating documentation from your plugin source, and you can verify
-  # by running `danger plugins lint` or `bundle exec rake spec`.
+  # @example Run phpmd and send warn comment.
   #
-  # You should replace these comments with a public description of your library.
+  #          phpmd.phpmd_path = "vendor/bin/phpmd"
+  #          phpmd.config_path = "rulesets.xml"
+  #          phpmd.run
   #
-  # @example Ensure people are well warned about merging on Mondays
-  #
-  #          my_plugin.warn_on_mondays
-  #
-  # @see  Kyosuke Takayama/danger-phpmd
-  # @tags monday, weekends, time, rattata
+  # @see  ktakayama/danger-phpmd
+  # @tags phpmd
   #
   class DangerPhpmd < Plugin
-    # An attribute that you can read/write from your Dangerfile
-    #
-    # @return   [Array<String>]
-    attr_accessor :my_attribute
+    # phpmd path
+    # @return [String]
+    attr_accessor :phpmd_path
 
-    # A method that you can call from your Dangerfile
-    # @return   [Array<String>]
-    #
-    def warn_on_mondays
-      warn "Trying to merge code on a Monday" if Date.today.wday == 1
+    # phpmd.xml path
+    # @return [String]
+    attr_accessor :config_path
+
+    # Execute phpmd
+    # @return [void]
+    def run
+      return if target_files.empty?
+      cmd = phpmd_path || "phpmd"
+      json,e,s = Open3.capture3(cmd, target_files.join(","), "json", config_path)
+      results = parse(json)
+      results.each do |result|
+        warn(result[:message], file: result[:file], line: result[:line])
+      end
+    end
+
+    private
+
+    def parse(json)
+      array = JSON.parse json
+      return if array.empty?
+      path = "#{Dir.pwd}/"
+
+      results = []
+      array['files'].each do |line|
+        file = line['file'].sub(path, "")
+        line['violations'].each do |violation|
+          results << {
+            message: violation['description'],
+            file: file,
+            line: violation['beginLine']
+          }
+        end
+      end
+      results
+    end
+
+    def target_files
+      (git.added_files + (git.modified_files - git.deleted_files))
     end
   end
 end
