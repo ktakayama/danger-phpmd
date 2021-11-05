@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.version       = Phpmd::VERSION
   spec.authors       = ["Kyosuke Takayama"]
   spec.email         = ["loiseau@gmail.com"]
-  spec.description   = "A short description of danger-phpmd."
-  spec.summary       = "A longer description of danger-phpmd."
+  spec.description   = "Danger plugin for PHPMD."
+  spec.summary       = "Danger plugin for PHPMD."
   spec.homepage      = "https://github.com/ktakayama/danger-phpmd"
   spec.license       = "MIT"
 
