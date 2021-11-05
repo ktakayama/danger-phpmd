@@ -10,9 +10,8 @@
 
 <blockquote>Run phpmd and send warn comment.
 <pre>
-phpmd.phpmd_path = "vendor/bin/phpmd"
-phpmd.config_path = "rulesets.xml"
-phpmd.run
+phpmd.binary_path = "vendor/bin/phpmd"
+phpmd.run ruleset: "rulesets.xml"
 </pre>
 </blockquote>
 

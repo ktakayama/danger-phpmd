@@ -8,9 +8,8 @@ module Danger
   #
   # @example Run phpmd and send warn comment.
   #
-  #          phpmd.phpmd_path = "vendor/bin/phpmd"
-  #          phpmd.config_path = "rulesets.xml"
-  #          phpmd.run
+  #          phpmd.binary_path = "vendor/bin/phpmd"
+  #          phpmd.run ruleset: "rulesets.xml"
   #
   # @see  ktakayama/danger-phpmd
   # @tags phpmd
@@ -18,18 +17,14 @@ module Danger
   class DangerPhpmd < Plugin
     # phpmd path
     # @return [String]
-    attr_accessor :phpmd_path
-
-    # phpmd.xml path
-    # @return [String]
-    attr_accessor :config_path
+    attr_accessor :binary_path
 
     # Execute phpmd
     # @return [void]
-    def run
+    def run(options)
       return if target_files.empty?
-      cmd = phpmd_path || "phpmd"
-      json,e,s = Open3.capture3(cmd, target_files.join(","), "json", config_path)
+      cmd = binary_path || "phpmd"
+      json,e,s = Open3.capture3(cmd, target_files.join(","), "json", options[:ruleset])
       results = parse(json)
       results.each do |result|
         warn(result[:message], file: result[:file], line: result[:line])
