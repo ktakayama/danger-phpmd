@@ -1,6 +1,6 @@
 # danger-phpmd
 
-A description of danger-phpmd.
+[Danger](http://danger.systems/ruby/) plugin for [phpmd](https://phpmd.org/).
 
 ## Installation
 
@@ -8,13 +8,13 @@ A description of danger-phpmd.
 
 ## Usage
 
-    Methods and attributes from this plugin are available in
-    your `Dangerfile` under the `phpmd` namespace.
+<blockquote>Run phpmd and send warn comment.
+<pre>
+phpmd.phpmd_path = "vendor/bin/phpmd"
+phpmd.config_path = "rulesets.xml"
+phpmd.run
+</pre>
+</blockquote>
 
-## Development
 
-1. Clone this repo
-2. Run `bundle install` to setup dependencies.
-3. Run `bundle exec rake spec` to run the tests.
-4. Use `bundle exec guard` to automatically have tests run as you make changes.
-5. Make your changes.
+
