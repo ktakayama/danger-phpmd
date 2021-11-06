@@ -6,6 +6,9 @@
 
     $ gem install danger-phpmd
 
+`phpmd` also needs to be installed before you run Danger.
+Please check the [installation guide](https://phpmd.org/download/index.html).
+
 ## Usage
 
 Add this to Dangerfile.
