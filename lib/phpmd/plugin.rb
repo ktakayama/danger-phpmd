@@ -53,7 +53,7 @@ module Danger
     end
 
     def target_files
-      (git.added_files + (git.modified_files - git.deleted_files))
+      ((git.added_files + (git.modified_files - git.deleted_files)) - git.renamed_files.map{|r|r[:before]} + git.renamed_files.map{|r|r[:after]}).uniq
     end
   end
 end
