@@ -8,12 +8,19 @@
 
 ## Usage
 
-<blockquote>Run phpmd and send warn comment.
-<pre>
+Add this to Dangerfile.
+
+```
+phpmd.run ruleset: "rulesets.xml"
+```
+
+If you want to specify phpmd bin file, you can set a bin path to the binary_path parameter.
+
+```
 phpmd.binary_path = "vendor/bin/phpmd"
 phpmd.run ruleset: "rulesets.xml"
-</pre>
-</blockquote>
+```
+
 
 
 
