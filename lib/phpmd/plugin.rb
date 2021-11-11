@@ -23,8 +23,7 @@ module Danger
     # @return [void]
     def run(options)
       return if target_files.empty?
-      cmd = binary_path || "phpmd"
-      json,e,s = Open3.capture3(cmd, target_files.join(","), "json", options[:ruleset])
+      json,e,s = Open3.capture3(cmd_path, target_files.join(","), "json", options[:ruleset])
       results = parse(json)
       results.each do |result|
         warn(result[:message], file: result[:file], line: result[:line])
@@ -32,6 +31,11 @@ module Danger
     end
 
     private
+
+    def cmd_path
+      return binary_path if binary_path
+      File.exists?('./vendor/bin/phpmd') ? './vendor/bin/phpmd' : 'phpmd'
+    end
 
     def parse(json)
       array = JSON.parse json
