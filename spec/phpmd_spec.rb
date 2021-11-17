@@ -16,8 +16,9 @@ module Danger
 
       context "with a file included no warnings" do
         before do
-          allow(@my_plugin).to receive(:target_files).and_return([
-            File.expand_path("fixtures/no_warnings.php", __dir__)])
+          allow(@my_plugin).to receive(:target_files).and_return(
+            [File.expand_path("fixtures/no_warnings.php", __dir__)]
+          )
         end
 
         it "warns nothing" do
@@ -30,8 +31,9 @@ module Danger
       context "with a file included some warnings" do
         let(:expected_message) { "The method bar uses an else expression. Else clauses are basically not necessary and you can simplify the code by not using them." }
         before do
-          allow(@my_plugin).to receive(:target_files).and_return([
-            File.expand_path("fixtures/cleancode_warnings.php", __dir__)])
+          allow(@my_plugin).to receive(:target_files).and_return(
+            [File.expand_path("fixtures/cleancode_warnings.php", __dir__)]
+          )
         end
 
         it "warns nothing" do
