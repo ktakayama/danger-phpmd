@@ -23,7 +23,8 @@ module Danger
     # @return [void]
     def run(options)
       return if target_files.empty?
-      json,e,s = Open3.capture3(cmd_path, target_files.join(","), "json", options[:ruleset])
+
+      json, _e, _s = Open3.capture3(cmd_path, target_files.join(","), "json", options[:ruleset])
       results = parse(json)
       results.each do |result|
         warn(result[:message], file: result[:file], line: result[:line])
@@ -34,22 +35,24 @@ module Danger
 
     def cmd_path
       return binary_path if binary_path
-      File.exists?('./vendor/bin/phpmd') ? './vendor/bin/phpmd' : 'phpmd'
+
+      File.exists?("./vendor/bin/phpmd") ? "./vendor/bin/phpmd" : "phpmd"
     end
 
     def parse(json)
       array = JSON.parse json
       return if array.empty?
+
       path = "#{Dir.pwd}/"
 
       results = []
-      array['files'].each do |line|
-        file = line['file'].sub(path, "")
-        line['violations'].each do |violation|
+      array["files"].each do |line|
+        file = line["file"].sub(path, "")
+        line["violations"].each do |violation|
           results << {
-            message: violation['description'],
+            message: violation["description"],
             file: file,
-            line: violation['beginLine']
+            line: violation["beginLine"]
           }
         end
       end
@@ -57,7 +60,7 @@ module Danger
     end
 
     def target_files
-      ((git.added_files + (git.modified_files - git.deleted_files)) - git.renamed_files.map{|r|r[:before]} + git.renamed_files.map{|r|r[:after]}).uniq
+      ((git.added_files + (git.modified_files - git.deleted_files)) - git.renamed_files.map { |r| r[:before] } + git.renamed_files.map { |r| r[:after] }).uniq
     end
   end
 end
