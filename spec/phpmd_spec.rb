@@ -8,39 +8,42 @@ module Danger
       expect(Danger::DangerPhpmd.new(nil)).to be_a Danger::Plugin
     end
 
-    #
-    # You should test your custom attributes and methods here
-    #
     describe "with Dangerfile" do
       before do
         @dangerfile = testing_dangerfile
         @my_plugin = @dangerfile.phpmd
-
-        # mock the PR data
-        # you can then use this, eg. github.pr_author, later in the spec
-        json = File.read("#{File.dirname(__FILE__)}/support/fixtures/github_pr.json") # example json: `curl https://api.github.com/repos/danger/danger-plugin-template/pulls/18 > github_pr.json`
-        allow(@my_plugin.github).to receive(:pr_json).and_return(json)
       end
 
-      # Some examples for writing tests
-      # You should replace these with your own.
+      context "with a file included no warnings" do
+        before do
+          allow(@my_plugin).to receive(:target_files).and_return([
+            File.expand_path("fixtures/no_warnings.php", __dir__)])
+        end
 
-      it "Warns on a monday" do
-        monday_date = Date.parse("2016-07-11")
-        allow(Date).to receive(:today).and_return monday_date
+        it "warns nothing" do
+          @my_plugin.run({ ruleset: "cleancode" })
 
-        @my_plugin.warn_on_mondays
-
-        expect(@dangerfile.status_report[:warnings]).to eq(["Trying to merge code on a Monday"])
+          expect(@dangerfile.status_report[:warnings]).to eq([])
+        end
       end
 
-      it "Does nothing on a tuesday" do
-        monday_date = Date.parse("2016-07-12")
-        allow(Date).to receive(:today).and_return monday_date
+      context "with a file included some warnings" do
+        let(:expected_message) { "The method bar uses an else expression. Else clauses are basically not necessary and you can simplify the code by not using them." }
+        before do
+          allow(@my_plugin).to receive(:target_files).and_return([
+            File.expand_path("fixtures/cleancode_warnings.php", __dir__)])
+        end
 
-        @my_plugin.warn_on_mondays
+        it "warns nothing" do
+          @my_plugin.run({ ruleset: "cleancode" })
 
-        expect(@dangerfile.status_report[:warnings]).to eq([])
+          expect(@dangerfile.status_report[:warnings]).to eq([expected_message])
+
+          violation_report = @dangerfile.violation_report[:warnings].first
+          expect(violation_report.file).to eq("spec/fixtures/cleancode_warnings.php")
+          expect(violation_report.line).to eq(7)
+          expect(violation_report.message).to eq(expected_message)
+        end
       end
     end
   end
