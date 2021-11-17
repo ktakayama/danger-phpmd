@@ -36,7 +36,7 @@ module Danger
     def cmd_path
       return binary_path if binary_path
 
-      File.exists?("./vendor/bin/phpmd") ? "./vendor/bin/phpmd" : "phpmd"
+      File.exist?("./vendor/bin/phpmd") ? "./vendor/bin/phpmd" : "phpmd"
     end
 
     def parse(json)
