@@ -24,8 +24,9 @@ module Danger
     def run(options)
       return if target_files.empty?
 
-      json, _e, _s = Open3.capture3(cmd_path, target_files.join(","), "json", options[:ruleset])
-      results = parse(json)
+      tmpfile = Tempfile.open("phpmd_result")
+      Open3.capture3(cmd_path, "--reportfile", tmpfile.path, target_files.join(","), "json", options[:ruleset])
+      results = parse(tmpfile.read)
       results.each do |result|
         warn(result[:message], file: result[:file], line: result[:line])
       end
