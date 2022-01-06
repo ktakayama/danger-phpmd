@@ -3,6 +3,7 @@
 # If you don't like these settings, just delete this file :)
 
 AllCops:
+  NewCops: enable
   TargetRubyVersion: 2.6
 
 Style/StringLiterals:
