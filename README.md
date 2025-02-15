@@ -40,13 +40,13 @@ jobs:
     - uses: actions/checkout@v2
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.6
+        ruby-version: 3.4
         bundler-cache: true
 
     - name: Setup PHP environment
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.0'
+        php-version: '8.4'
         coverage: none
         tools: phpmd
 
