@@ -8,9 +8,11 @@ jobs:
 
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         ruby-version: ['3.3', '3.4']
         php-version: ['8.3', '8.4', '8.5']
+        phpmd-version: ['2', '3']
 
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -19,7 +21,7 @@ jobs:
       with:
         php-version: ${{ matrix.php-version }}
         coverage: none
-        tools: phpmd
+        tools: phpmd:${{ matrix.phpmd-version }}
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:

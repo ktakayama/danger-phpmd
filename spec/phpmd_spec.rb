@@ -47,6 +47,18 @@ module Danger
           expect(violation_report.message).to eq(expected_message)
         end
       end
+
+      context "with an unknown ruleset" do
+        before do
+          allow(@my_plugin).to receive(:target_files).and_return(
+            [File.expand_path("fixtures/no_warnings.php", __dir__)]
+          )
+        end
+
+        it "raises an error" do
+          expect { @my_plugin.run({ ruleset: "unknown" }) }.to raise_error(/phpmd failed/)
+        end
+      end
     end
   end
 end
