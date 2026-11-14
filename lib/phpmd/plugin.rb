@@ -25,7 +25,9 @@ module Danger
       return if target_files.empty?
 
       tmpfile = Tempfile.open("phpmd_result")
-      Open3.capture3(*command(tmpfile.path, options[:ruleset]))
+      _stdout, stderr, status = Open3.capture3(*command(tmpfile.path, options[:ruleset]))
+      raise "phpmd failed: #{stderr}" unless [0, 2].include?(status.exitstatus)
+
       results = parse(tmpfile.read)
       results.each do |result|
         warn(result[:message], file: result[:file], line: result[:line])
