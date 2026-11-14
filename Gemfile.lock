@@ -144,7 +144,7 @@ GEM
     thor (1.4.0)
     unicode-display_width (3.1.4)
       unicode-emoji (~> 4.0, >= 4.0.4)
-    unicode-emoji (4.0.4)
+    unicode-emoji (4.3.0)
     uri (1.1.1)
     yard (0.9.44)
 
