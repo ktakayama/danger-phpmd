@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby-version: ['3.3', '3.4']
+        ruby-version: ['3.4', '4.0']
         php-version: ['8.3', '8.4', '8.5']
         phpmd-version: ['2', '3']
 
