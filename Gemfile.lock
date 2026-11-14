@@ -194,7 +194,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 2.0)
+  bundler (~> 4.0)
   danger-phpmd!
   guard (~> 2.14)
   guard-rspec (~> 4.7)
@@ -206,4 +206,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   2.6.3
+   4.0.24

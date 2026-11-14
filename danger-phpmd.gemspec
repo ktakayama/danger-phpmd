@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "danger-plugin-api", "~> 1.0"
 
   # General ruby development
-  spec.add_development_dependency "bundler", "~> 2.0"
+  spec.add_development_dependency "bundler", "~> 4.0"
   spec.add_development_dependency "rake", "~> 13.0"
 
   # Testing support
