@@ -71,7 +71,7 @@ GEM
       logger (~> 1.6)
       process_executer (~> 4.1)
       rchardet (~> 1.9)
-    guard (2.20.2)
+    guard (2.21.0)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
       logger (~> 1.6)
@@ -206,4 +206,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   4.0.24
+  4.0.24
